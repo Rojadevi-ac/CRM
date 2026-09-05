@@ -1,0 +1,16 @@
+# Backend
+backend/.env
+backend/venv/
+backend/__pycache__/
+
+# Frontend
+frontend/.env
+frontend/node_modules/
+frontend/dist/
+
+# Uploads
+backend/uploads/
+
+# General
+*.pyc
+.DS_Store
