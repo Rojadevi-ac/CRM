@@ -6,24 +6,102 @@ from sockets.socket_events import emit_event
 
 class SettingsService:
     @staticmethod
+    def ensure_tables_exist():
+        """Ensure settings tables exist in the database with safe CREATE TABLE IF NOT EXISTS."""
+        try:
+            execute_query("""
+                CREATE TABLE IF NOT EXISTS company_settings (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    company_name VARCHAR(150) NOT NULL DEFAULT 'Enterprise CRM',
+                    legal_name VARCHAR(150) NULL,
+                    display_name VARCHAR(150) NULL,
+                    logo_url VARCHAR(255) NULL,
+                    email VARCHAR(150) NULL,
+                    phone VARCHAR(50) NULL,
+                    alternate_phone VARCHAR(50) NULL,
+                    website VARCHAR(255) NULL,
+                    address_line_1 VARCHAR(255) NULL,
+                    address_line_2 VARCHAR(255) NULL,
+                    city VARCHAR(100) NULL,
+                    state VARCHAR(100) NULL,
+                    country VARCHAR(100) DEFAULT 'India',
+                    postal_code VARCHAR(30) NULL,
+                    tax_number VARCHAR(50) NULL,
+                    registration_number VARCHAR(50) NULL,
+                    currency VARCHAR(10) DEFAULT 'USD',
+                    timezone VARCHAR(50) DEFAULT 'UTC',
+                    date_format VARCHAR(20) DEFAULT 'MM/DD/YYYY',
+                    contact_person VARCHAR(100) NULL,
+                    description TEXT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                ) ENGINE=InnoDB;
+            """)
+            execute_query("""
+                CREATE TABLE IF NOT EXISTS user_preferences (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT NOT NULL UNIQUE,
+                    theme_mode VARCHAR(20) DEFAULT 'system',
+                    theme_template VARCHAR(50) DEFAULT 'classic-blue',
+                    accent_color VARCHAR(50) DEFAULT '#2563eb',
+                    sidebar_behavior VARCHAR(20) DEFAULT 'expanded',
+                    ui_density VARCHAR(20) DEFAULT 'comfortable',
+                    border_radius VARCHAR(20) DEFAULT 'medium',
+                    custom_theme JSON NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+                ) ENGINE=InnoDB;
+            """)
+        except Exception as e:
+            print(f"ensure_tables_exist notice: {e}")
+
+    @staticmethod
     def get_company_settings():
         """Retrieve active company settings record or create default if none exists."""
-        settings = query_one("SELECT * FROM company_settings ORDER BY id ASC LIMIT 1")
-        if not settings:
-            execute_query("""
-                INSERT INTO company_settings (
-                    company_name, legal_name, display_name, email, phone, website,
-                    address_line_1, city, state, country, postal_code, currency, timezone, date_format,
-                    contact_person, description
-                ) VALUES (
-                    'Enterprise CRM Inc.', 'Enterprise CRM Technologies Private Limited', 'Enterprise CRM',
-                    'contact@enterprisecrm.io', '+1 (555) 019-2834', 'https://enterprisecrm.io',
-                    '100 Innovation Boulevard, Suite 400', 'San Francisco', 'CA', 'United States',
-                    '94105', 'USD', 'America/Los_Angeles', 'MM/DD/YYYY', 'Chief Operations Officer',
-                    'Next-generation intelligent CRM platform powering modern high-velocity revenue teams.'
-                )
-            """)
+        try:
             settings = query_one("SELECT * FROM company_settings ORDER BY id ASC LIMIT 1")
+        except Exception:
+            SettingsService.ensure_tables_exist()
+            try:
+                settings = query_one("SELECT * FROM company_settings ORDER BY id ASC LIMIT 1")
+            except Exception:
+                settings = None
+
+        if not settings:
+            try:
+                execute_query("""
+                    INSERT INTO company_settings (
+                        company_name, legal_name, display_name, email, phone, website,
+                        address_line_1, city, state, country, postal_code, currency, timezone, date_format,
+                        contact_person, description
+                    ) VALUES (
+                        'Enterprise CRM Inc.', 'Enterprise CRM Technologies Private Limited', 'Enterprise CRM',
+                        'contact@enterprisecrm.io', '+1 (555) 019-2834', 'https://enterprisecrm.io',
+                        '100 Innovation Boulevard, Suite 400', 'San Francisco', 'CA', 'United States',
+                        '94105', 'USD', 'America/Los_Angeles', 'MM/DD/YYYY', 'Chief Operations Officer',
+                        'Next-generation intelligent CRM platform powering modern high-velocity revenue teams.'
+                    )
+                """)
+                settings = query_one("SELECT * FROM company_settings ORDER BY id ASC LIMIT 1")
+            except Exception:
+                pass
+
+        if not settings:
+            return {
+                'id': 1,
+                'company_name': 'Enterprise CRM Inc.',
+                'legal_name': 'Enterprise CRM Technologies Private Limited',
+                'display_name': 'Enterprise CRM',
+                'email': 'contact@enterprisecrm.io',
+                'phone': '+1 (555) 019-2834',
+                'website': 'https://enterprisecrm.io',
+                'currency': 'USD',
+                'timezone': 'UTC',
+                'date_format': 'MM/DD/YYYY',
+                'country': 'United States',
+                'logo_url': None
+            }
         return settings
 
     @staticmethod
@@ -126,18 +204,27 @@ class SettingsService:
     @staticmethod
     def get_user_preferences(user_id):
         """Retrieve user-specific theme and interface preferences."""
-        prefs = query_one("SELECT * FROM user_preferences WHERE user_id = %s", (user_id,))
+        default_prefs = {
+            'user_id': user_id,
+            'theme_mode': 'system',
+            'theme_template': 'classic-blue',
+            'accent_color': '#2563eb',
+            'sidebar_behavior': 'expanded',
+            'ui_density': 'comfortable',
+            'border_radius': 'medium',
+            'custom_theme': None
+        }
+        try:
+            prefs = query_one("SELECT * FROM user_preferences WHERE user_id = %s", (user_id,))
+        except Exception:
+            SettingsService.ensure_tables_exist()
+            try:
+                prefs = query_one("SELECT * FROM user_preferences WHERE user_id = %s", (user_id,))
+            except Exception:
+                return default_prefs
+
         if not prefs:
-            return {
-                'user_id': user_id,
-                'theme_mode': 'system',
-                'theme_template': 'classic-blue',
-                'accent_color': '#2563eb',
-                'sidebar_behavior': 'expanded',
-                'ui_density': 'comfortable',
-                'border_radius': 'medium',
-                'custom_theme': None
-            }
+            return default_prefs
         
         if isinstance(prefs.get('custom_theme'), str):
             try:
@@ -162,7 +249,15 @@ class SettingsService:
         else:
             custom_theme_json = custom_theme
 
-        existing = query_one("SELECT id FROM user_preferences WHERE user_id = %s", (user_id,))
+        try:
+            existing = query_one("SELECT id FROM user_preferences WHERE user_id = %s", (user_id,))
+        except Exception:
+            SettingsService.ensure_tables_exist()
+            try:
+                existing = query_one("SELECT id FROM user_preferences WHERE user_id = %s", (user_id,))
+            except Exception:
+                existing = None
+
         if existing:
             sql = """
                 UPDATE user_preferences SET

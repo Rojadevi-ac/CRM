@@ -55,6 +55,13 @@ def create_app():
     os.makedirs(config.UPLOAD_FOLDER, exist_ok=True)
     os.makedirs(config.LOGO_UPLOAD_FOLDER, exist_ok=True)
 
+    # Initialize settings and preferences tables if not existing
+    try:
+        from services.settings_service import SettingsService
+        SettingsService.ensure_tables_exist()
+    except Exception as e:
+        print(f"Startup table check: {e}")
+
     # Register Blueprints
     app.register_blueprint(auth_bp)
     app.register_blueprint(user_bp)
