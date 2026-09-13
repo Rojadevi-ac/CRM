@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCompany } from '../context/CompanyContext';
 import { Eye, EyeOff, Lock, Mail, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 export default function Login() {
@@ -12,7 +13,20 @@ export default function Login() {
   const [errorMsg, setErrorMsg] = useState('');
 
   const { login } = useAuth();
+  const { companySettings } = useCompany();
   const navigate = useNavigate();
+
+  const brandName = companySettings?.display_name || companySettings?.company_name || 'Enterprise CRM';
+  const backendBase = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://127.0.0.1:5000';
+  const logoUrl = companySettings?.logo_url ? (companySettings.logo_url.startsWith('http') ? companySettings.logo_url : `${backendBase}${companySettings.logo_url}`) : null;
+  const initials = brandName
+    .split(' ')
+    .filter(Boolean)
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase() || 'CRM';
+  const description = companySettings?.description || 'Sign in to your sales management & CRM workspace';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,14 +60,22 @@ export default function Login() {
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center z-10">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white font-black text-xl shadow-lg mb-3">
-          RD
-        </div>
+        {logoUrl ? (
+          <img
+            src={logoUrl}
+            alt={brandName}
+            className="inline-block w-14 h-14 rounded-2xl object-cover shadow-lg border border-slate-700/60 mb-3"
+          />
+        ) : (
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white font-black text-xl shadow-lg mb-3">
+            {initials}
+          </div>
+        )}
         <h2 className="text-2xl font-bold tracking-tight text-white">
-          RD-CRM Enterprise
+          {brandName}
         </h2>
         <p className="mt-1 text-xs text-slate-400">
-          Sign in to your sales management & CRM workspace
+          {description}
         </p>
       </div>
 
