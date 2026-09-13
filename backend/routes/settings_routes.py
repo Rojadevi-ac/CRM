@@ -10,9 +10,8 @@ settings_bp = Blueprint('settings', __name__, url_prefix='/api/settings')
 # -------------------------------------------------------------
 
 @settings_bp.route('/company', methods=['GET'])
-@token_required
 def get_company_settings():
-    """Retrieve company settings for authenticated users."""
+    """Retrieve company settings for public branding and authenticated users."""
     settings = SettingsService.get_company_settings()
     return jsonify({'success': True, 'data': settings}), 200
 

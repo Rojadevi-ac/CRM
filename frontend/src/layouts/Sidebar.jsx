@@ -59,17 +59,17 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
 
   const sidebarContent = (
     <div
-      className="h-full flex flex-col justify-between transition-all duration-300 select-none shadow-sm"
+      className="h-full flex flex-col justify-between transition-colors duration-300 select-none shadow-md text-white"
       style={{
-        backgroundColor: 'var(--theme-bg-sidebar, #ffffff)',
-        borderRight: '1px solid var(--theme-border-color, #e2e8f0)',
+        backgroundColor: 'var(--color-brand-primary, #2563eb)',
+        borderRight: '1px solid rgba(255, 255, 255, 0.12)',
       }}
     >
       {/* Brand Header */}
       <div>
         <div
           className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} h-16 px-4`}
-          style={{ borderBottom: '1px solid var(--theme-border-color, #e2e8f0)' }}
+          style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.12)' }}
         >
           {!isCollapsed && (
             <div className="flex items-center gap-2.5 min-w-0">
@@ -77,19 +77,22 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
                 <img
                   src={logoUrl}
                   alt={brandName}
-                  className="w-9 h-9 rounded-2xl object-cover shadow-sm border border-slate-200/80 dark:border-slate-700/60 shrink-0"
+                  className="w-9 h-9 rounded-2xl object-cover shadow-sm bg-white/20 border border-white/30 shrink-0"
                 />
               ) : (
-                <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-600 flex items-center justify-center text-white font-black text-xs shadow-sm border border-white/30 shrink-0">
+                <div
+                  className="w-9 h-9 rounded-2xl bg-white flex items-center justify-center font-black text-xs shadow-sm shrink-0"
+                  style={{ color: 'var(--color-brand-primary, #2563eb)' }}
+                >
                   {initials}
                 </div>
               )}
               <div className="flex flex-col min-w-0">
-                <span className="font-extrabold text-sm leading-tight tracking-tight text-slate-900 dark:text-slate-100 truncate flex items-center gap-1.5">
+                <span className="font-extrabold text-sm leading-tight tracking-tight text-white truncate flex items-center gap-1.5">
                   {brandName}
-                  <span className="w-2 h-2 rounded-full bg-brand-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] shrink-0"></span>
+                  <span className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)] shrink-0"></span>
                 </span>
-                <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider truncate">
+                <span className="text-[10px] uppercase font-bold text-white/75 tracking-wider truncate">
                   Enterprise Suite
                 </span>
               </div>
@@ -102,12 +105,13 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
                 <img
                   src={logoUrl}
                   alt={brandName}
-                  className="w-9 h-9 rounded-2xl object-cover shadow-sm border border-slate-200/80 dark:border-slate-700/60"
+                  className="w-9 h-9 rounded-2xl object-cover shadow-sm bg-white/20 border border-white/30"
                   title={brandName}
                 />
               ) : (
                 <div
-                  className="w-9 h-9 rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-600 flex items-center justify-center text-white font-black text-xs shadow-sm border border-white/30"
+                  className="w-9 h-9 rounded-2xl bg-white flex items-center justify-center font-black text-xs shadow-sm"
+                  style={{ color: 'var(--color-brand-primary, #2563eb)' }}
                   title={brandName}
                 >
                   {initials}
@@ -119,7 +123,7 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
           {/* Desktop collapse toggle */}
           <button
             onClick={onToggleCollapse}
-            className="hidden lg:flex p-1.5 rounded-xl text-slate-500 hover:text-brand-600 dark:hover:text-brand-400 clay-pill transition-all active:scale-95"
+            className="hidden lg:flex p-1.5 rounded-xl text-white/80 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all active:scale-95"
             title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -140,17 +144,17 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
                     isCollapsed ? 'justify-center px-2' : 'px-3.5'
                   } py-2.5 rounded-xl text-xs font-bold transition-all duration-150 ${
                     isActive
-                      ? 'bg-brand-50/90 dark:bg-brand-950/80 text-brand-700 dark:text-brand-300 shadow-clay-pill dark:shadow-clay-pill-dark border border-brand-200/80 dark:border-brand-750'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50/90 dark:hover:bg-[#182238] hover:text-slate-900 dark:hover:text-slate-100 hover:shadow-soft-xs'
+                      ? 'bg-white/25 text-white shadow-sm border border-white/35 backdrop-blur-sm'
+                      : 'text-white/80 hover:text-white hover:bg-white/10'
                   }`
                 }
               >
-                <Icon className={`w-4 h-4 shrink-0 ${isCollapsed ? '' : 'mr-3'} transition-transform group-hover:scale-110`} />
-                {!isCollapsed && <span>{item.name}</span>}
+                <Icon className={`w-4 h-4 shrink-0 ${isCollapsed ? '' : 'mr-3'} text-white transition-transform group-hover:scale-110`} />
+                {!isCollapsed && <span className="text-white">{item.name}</span>}
 
                 {/* Collapsed Tooltip */}
                 {isCollapsed && (
-                  <div className="fixed left-20 ml-2 px-3 py-1.5 clay-card text-slate-900 dark:text-white text-xs font-bold shadow-clay-card-hover dark:shadow-clay-card-dark-hover opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap">
+                  <div className="fixed left-20 ml-2 px-3 py-1.5 rounded-xl bg-slate-900/95 text-white text-xs font-bold shadow-xl border border-slate-700/80 opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap">
                     {item.name}
                   </div>
                 )}
@@ -161,7 +165,10 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
       </div>
 
       {/* Bottom Settings items */}
-      <div className="p-3 border-t border-slate-100/80 dark:border-slate-800/80 space-y-1.5">
+      <div
+        className="p-3 space-y-1.5"
+        style={{ borderTop: '1px solid rgba(255, 255, 255, 0.12)' }}
+      >
         {BOTTOM_ITEMS.map((item) => {
           const Icon = item.icon;
           return (
@@ -174,16 +181,16 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
                   isCollapsed ? 'justify-center px-2' : 'px-3.5'
                 } py-2.5 rounded-xl text-xs font-bold transition-all duration-150 ${
                   isActive
-                    ? 'bg-brand-50/90 dark:bg-brand-950/80 text-brand-700 dark:text-brand-300 shadow-clay-pill dark:shadow-clay-pill-dark border border-brand-200/80 dark:border-brand-750'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50/90 dark:hover:bg-[#182238] hover:text-slate-900 dark:hover:text-slate-100'
+                    ? 'bg-white/25 text-white shadow-sm border border-white/35 backdrop-blur-sm'
+                    : 'text-white/80 hover:text-white hover:bg-white/10'
                 }`
               }
             >
-              <Icon className={`w-4 h-4 shrink-0 ${isCollapsed ? '' : 'mr-3'} transition-transform group-hover:scale-110`} />
-              {!isCollapsed && <span>{item.name}</span>}
+              <Icon className={`w-4 h-4 shrink-0 ${isCollapsed ? '' : 'mr-3'} text-white transition-transform group-hover:scale-110`} />
+              {!isCollapsed && <span className="text-white">{item.name}</span>}
 
               {isCollapsed && (
-                <div className="fixed left-20 ml-2 px-3 py-1.5 clay-card text-slate-900 dark:text-white text-xs font-bold shadow-clay-card-hover dark:shadow-clay-card-dark-hover opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap">
+                <div className="fixed left-20 ml-2 px-3 py-1.5 rounded-xl bg-slate-900/95 text-white text-xs font-bold shadow-xl border border-slate-700/80 opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap">
                   {item.name}
                 </div>
               )}
