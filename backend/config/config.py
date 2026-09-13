@@ -18,7 +18,9 @@ class Config:
     DB_NAME = os.getenv('DB_NAME', 'crm_db')
 
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'profile_pictures')
+    LOGO_UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'company_logos')
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024  # 5MB max
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
+    ALLOWED_LOGO_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'svg', 'gif'}
 
 config = Config()

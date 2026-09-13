@@ -10,6 +10,7 @@ export const authApi = {
 export const userApi = {
   getUsers: (params) => api.get('/users', { params }),
   getRoles: () => api.get('/users/roles'),
+  getOnlineUsers: () => api.get('/users/online'),
   getUser: (id) => api.get(`/users/${id}`),
   createUser: (data) => api.post('/users', data),
   updateUser: (id, data) => api.put(`/users/${id}`, data),
@@ -129,3 +130,15 @@ export const auditApi = {
   addNote: (data) => api.post('/notes', data),
   deleteNote: (id) => api.delete(`/notes/${id}`),
 };
+
+export const settingsApi = {
+  getCompanySettings: () => api.get('/settings/company'),
+  updateCompanySettings: (data) => api.put('/settings/company', data),
+  uploadCompanyLogo: (formData) => api.post('/settings/company/logo', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  removeCompanyLogo: () => api.delete('/settings/company/logo'),
+  getUserPreferences: () => api.get('/settings/preferences'),
+  updateUserPreferences: (data) => api.put('/settings/preferences', data),
+};
+

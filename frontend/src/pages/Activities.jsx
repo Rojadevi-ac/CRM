@@ -218,16 +218,18 @@ export default function Activities() {
     <div className="space-y-5 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Activities</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <ActivityIcon className="w-6 h-6 text-brand-500" /> Activities
+          </h1>
           <p className="text-xs text-slate-500">Track client calls, presentations, emails, and demos.</p>
         </div>
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex gap-3">
+      <div className="clay-card p-4 flex gap-3 flex-wrap">
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+          className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none"
         >
           <option value="">All Activity Types</option>
           {ACTIVITY_TYPES.map((t) => (
@@ -237,7 +239,7 @@ export default function Activities() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+          className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none"
         >
           <option value="">All Statuses</option>
           {ACTIVITY_STATUSES.map((st) => (
@@ -260,7 +262,7 @@ export default function Activities() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">Activity Type</label>
-              <select value={formData.activity_type} onChange={(e) => setFormData({ ...formData, activity_type: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.activity_type} onChange={(e) => setFormData({ ...formData, activity_type: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 {ACTIVITY_TYPES.map((t) => (
                   <option key={t} value={t}>{t}</option>
                 ))}
@@ -268,7 +270,7 @@ export default function Activities() {
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Related Lead</label>
-              <select value={formData.lead_id} onChange={(e) => setFormData({ ...formData, lead_id: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.lead_id} onChange={(e) => setFormData({ ...formData, lead_id: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 <option value="">Select Lead (Optional)</option>
                 {leads.map((l) => (
                   <option key={l.id} value={l.id}>{l.name} ({l.company_name})</option>
@@ -278,22 +280,22 @@ export default function Activities() {
           </div>
           <div>
             <label className="block text-xs font-semibold mb-1">Subject *</label>
-            <input type="text" required value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+            <input type="text" required value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">Date</label>
-              <input type="date" required value={formData.activity_date} onChange={(e) => setFormData({ ...formData, activity_date: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="date" required value={formData.activity_date} onChange={(e) => setFormData({ ...formData, activity_date: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Time (12-hr local)</label>
-              <input type="time" value={formData.activity_time} onChange={(e) => setFormData({ ...formData, activity_time: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="time" value={formData.activity_time} onChange={(e) => setFormData({ ...formData, activity_time: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">Status</label>
-              <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 {ACTIVITY_STATUSES.map((st) => (
                   <option key={st} value={st}>{st}</option>
                 ))}
@@ -301,7 +303,7 @@ export default function Activities() {
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Assigned Salesperson</label>
-              <select value={formData.assigned_user_id} onChange={(e) => setFormData({ ...formData, assigned_user_id: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.assigned_user_id} onChange={(e) => setFormData({ ...formData, assigned_user_id: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 <option value="">Select Representative (Optional)</option>
                 {users.map((u) => (
                   <option key={u.id} value={u.id}>{u.full_name} ({u.role_name})</option>
@@ -311,11 +313,11 @@ export default function Activities() {
           </div>
           <div>
             <label className="block text-xs font-semibold mb-1">Description / Minutes</label>
-            <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+            <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
           </div>
-          <div className="flex justify-end gap-3 pt-3 border-t">
-            <button type="button" onClick={() => setIsEditOpen(false)} className="px-3 py-1.5 text-xs">Cancel</button>
-            <button type="submit" disabled={submitting} className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg">Save</button>
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <button type="button" onClick={() => setIsEditOpen(false)} className="clay-btn-secondary px-4 py-2 text-xs">Cancel</button>
+            <button type="submit" disabled={submitting} className="clay-btn-primary px-5 py-2 text-xs">Save</button>
           </div>
         </form>
       </Modal>

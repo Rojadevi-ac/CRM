@@ -326,8 +326,8 @@ export default function Customers() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Customer Directory
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <Users className="w-6 h-6 text-brand-500" /> Customer Directory
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Active accounts, enterprise clients, and revenue history.
@@ -337,30 +337,30 @@ export default function Customers() {
         {canWrite && (
           <button
             onClick={openCreateModal}
-            className="px-3.5 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm transition-colors flex items-center gap-1.5"
+            className="clay-btn-primary px-4 py-2 text-xs flex items-center gap-2"
           >
-            <Plus className="w-3.5 h-3.5" /> Add Customer
+            <Plus className="w-4 h-4" /> Add Customer
           </button>
         )}
       </div>
 
       {/* Filter Bar */}
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-wrap items-center gap-3">
-        <div className="relative flex-1 min-w-[200px]">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+      <div className="clay-card p-4 flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-[220px]">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by customer name, email, phone..."
-            className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-brand-500"
+            className="w-full pl-10 pr-3 py-2 clay-inset text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         </div>
 
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-300 focus:outline-none"
+          className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none"
         >
           <option value="">All Statuses</option>
           {CUSTOMER_STATUSES.map((st) => (
@@ -371,7 +371,7 @@ export default function Customers() {
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-300 focus:outline-none"
+          className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none"
         >
           <option value="">All Account Types</option>
           {CUSTOMER_TYPES.map((t) => (
@@ -414,7 +414,7 @@ export default function Customers() {
                 value={formData.customer_name}
                 onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
                 placeholder="e.g. Apex Retail Group"
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               />
             </div>
 
@@ -428,7 +428,7 @@ export default function Customers() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="e.g. accounts@apexretail.example.com"
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               />
             </div>
 
@@ -441,7 +441,7 @@ export default function Customers() {
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 placeholder="e.g. +91 44 2847 1100"
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               />
             </div>
 
@@ -452,7 +452,7 @@ export default function Customers() {
               <select
                 value={formData.company_id}
                 onChange={(e) => setFormData({ ...formData, company_id: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               >
                 <option value="">None / Standalone</option>
                 {companies.map((c) => (
@@ -470,7 +470,7 @@ export default function Customers() {
                 value={formData.industry}
                 onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
                 placeholder="e.g. Retail / FMCG"
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               />
             </div>
 
@@ -481,7 +481,7 @@ export default function Customers() {
               <select
                 value={formData.customer_type}
                 onChange={(e) => setFormData({ ...formData, customer_type: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               >
                 {CUSTOMER_TYPES.map((t) => (
                   <option key={t} value={t}>{t}</option>
@@ -496,7 +496,7 @@ export default function Customers() {
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               >
                 {CUSTOMER_STATUSES.map((st) => (
                   <option key={st} value={st}>{st}</option>
@@ -511,7 +511,7 @@ export default function Customers() {
               <select
                 value={formData.owner_id}
                 onChange={(e) => setFormData({ ...formData, owner_id: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               >
                 <option value="">Select Staff</option>
                 {users.map((u) => (
@@ -529,7 +529,7 @@ export default function Customers() {
               rows={2}
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              className="w-full px-3.5 py-2 clay-inset text-xs"
             />
           </div>
 
@@ -540,14 +540,14 @@ export default function Customers() {
                 setIsCreateOpen(false);
                 setIsEditOpen(false);
               }}
-              className="px-4 py-2 text-xs font-medium text-slate-600"
+              className="clay-btn-secondary px-4 py-2 text-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm"
+              className="clay-btn-primary px-5 py-2 text-xs"
             >
               {submitting ? 'Saving...' : isEditOpen ? 'Save Changes' : 'Create Customer'}
             </button>

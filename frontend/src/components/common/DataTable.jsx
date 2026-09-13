@@ -42,16 +42,16 @@ export default function DataTable({
   };
 
   return (
-    <div className="w-full bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+    <div className="w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/80 dark:border-slate-800/80 overflow-hidden shadow-soft transition-all">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm border-collapse">
           <thead>
-            <tr className="bg-slate-50/80 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <tr className="bg-slate-50/90 dark:bg-slate-800/70 border-b border-slate-200/80 dark:border-slate-800/80 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               {columns.map((col) => (
                 <th
                   key={col.key || col.header}
                   className={`px-4 py-3.5 ${col.className || ''} ${
-                    col.sortable ? 'cursor-pointer select-none hover:text-slate-800 dark:hover:text-slate-200' : ''
+                    col.sortable ? 'cursor-pointer select-none hover:text-brand-600 dark:hover:text-brand-400' : ''
                   }`}
                   onClick={() => col.sortable && handleSort(col.key)}
                 >
@@ -79,10 +79,10 @@ export default function DataTable({
             {data.map((row, rowIdx) => (
               <tr
                 key={row.id || rowIdx}
-                className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors"
+                className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors"
               >
                 {columns.map((col) => (
-                  <td key={col.key || col.header} className={`px-4 py-3 text-slate-700 dark:text-slate-300 ${col.className || ''}`}>
+                  <td key={col.key || col.header} className={`px-4 py-3.5 text-slate-700 dark:text-slate-300 text-xs sm:text-sm ${col.className || ''}`}>
                     {col.render ? col.render(row, rowIdx) : row[col.key] ?? '—'}
                   </td>
                 ))}
@@ -94,36 +94,36 @@ export default function DataTable({
 
       {/* Pagination Footer */}
       {pagination && (
-        <div className="flex items-center justify-between px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850/40 text-xs text-slate-500 dark:text-slate-400">
+        <div className="flex items-center justify-between px-6 py-3.5 border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/60 dark:bg-slate-850/60 text-xs text-slate-500 dark:text-slate-400">
           <div>
             Showing{' '}
-            <span className="font-semibold text-slate-700 dark:text-slate-300">
+            <span className="font-bold text-slate-800 dark:text-slate-200">
               {(pagination.page - 1) * pagination.limit + 1}
             </span>{' '}
             to{' '}
-            <span className="font-semibold text-slate-700 dark:text-slate-300">
+            <span className="font-bold text-slate-800 dark:text-slate-200">
               {Math.min(pagination.page * pagination.limit, pagination.total)}
             </span>{' '}
             of{' '}
-            <span className="font-semibold text-slate-700 dark:text-slate-300">{pagination.total}</span>{' '}
+            <span className="font-bold text-slate-800 dark:text-slate-200">{pagination.total}</span>{' '}
             results
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => onPageChange(pagination.page - 1)}
               disabled={pagination.page <= 1}
-              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-soft-xs"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-3 py-1 font-medium text-slate-700 dark:text-slate-300">
+            <span className="px-3 py-1 font-bold text-slate-700 dark:text-slate-300">
               Page {pagination.page} of {pagination.pages || 1}
             </span>
             <button
               onClick={() => onPageChange(pagination.page + 1)}
               disabled={pagination.page >= pagination.pages}
-              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-soft-xs"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

@@ -345,16 +345,16 @@ export default function AuditLogs() {
     <div className="space-y-5 pb-12">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <ShieldCheck className="w-6 h-6 text-brand-600" /> System Audit Trails
+          <ShieldCheck className="w-6 h-6 text-brand-500" /> System Audit Trails
         </h1>
         <p className="text-xs text-slate-500">Administrative immutable log of critical CRM data modifications.</p>
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-wrap gap-3 items-center justify-between">
+      <div className="clay-card p-4 flex flex-wrap gap-3 items-center justify-between">
         <select
           value={moduleFilter}
           onChange={(e) => setModuleFilter(e.target.value)}
-          className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+          className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none"
         >
           <option value="">All Modules</option>
           <option value="leads">Leads</option>
@@ -386,7 +386,7 @@ export default function AuditLogs() {
       >
         {selectedLog && (
           <div className="space-y-5 text-xs">
-            <div className="grid grid-cols-2 gap-3 p-3.5 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div className="grid grid-cols-2 gap-3 p-4 clay-card">
               <div>
                 <span className="text-slate-400 block text-[10px] uppercase font-bold">Action & Module</span>
                 <span className="font-bold text-slate-900 dark:text-slate-100">{selectedLog.action}</span>
@@ -412,11 +412,11 @@ export default function AuditLogs() {
                 if (o && n && typeof o === 'object' && typeof n === 'object') {
                   const diffs = calculateDiffs(o, n);
                   if (diffs.length === 0) {
-                    return <div className="text-slate-400 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">No direct field variations detected.</div>;
+                    return <div className="text-slate-400 p-3 clay-inset rounded-xl">No direct field variations detected.</div>;
                   }
                   return (
-                    <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
-                      <div className="grid grid-cols-3 bg-slate-100 dark:bg-slate-800 px-3 py-2 font-bold text-[11px] text-slate-600 dark:text-slate-300">
+                    <div className="clay-card overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+                      <div className="grid grid-cols-3 bg-slate-100/70 dark:bg-slate-800/70 px-3 py-2 font-bold text-[11px] text-slate-600 dark:text-slate-300">
                         <span>Field</span>
                         <span>Previous Value</span>
                         <span>Updated Value</span>
@@ -433,14 +433,14 @@ export default function AuditLogs() {
                 }
                 if (n && !o) {
                   return (
-                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg text-emerald-700 dark:text-emerald-300">
+                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-emerald-700 dark:text-emerald-300">
                       Record newly created with parameters: {getEntityName(n) || 'New Record'}
                     </div>
                   );
                 }
                 if (o && !n) {
                   return (
-                    <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-lg text-rose-700 dark:text-rose-300">
+                    <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-xl text-rose-700 dark:text-rose-300">
                       Record deleted permanently: {getEntityName(o) || 'Deleted Record'}
                     </div>
                   );
@@ -453,7 +453,7 @@ export default function AuditLogs() {
               <button
                 type="button"
                 onClick={() => setSelectedLog(null)}
-                className="px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-lg"
+                className="clay-btn-secondary px-4 py-2 text-xs"
               >
                 Close
               </button>

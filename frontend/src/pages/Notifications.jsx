@@ -59,8 +59,8 @@ export default function Notifications() {
     <div className="space-y-5 pb-12 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Notification Center
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <Bell className="w-6 h-6 text-brand-500" /> Notification Center
           </h1>
           <p className="text-xs text-slate-500">System alerts, lead assignments, and deal milestones.</p>
         </div>
@@ -68,17 +68,17 @@ export default function Notifications() {
         {notifications.some((n) => !n.is_read) && (
           <button
             onClick={handleMarkAllRead}
-            className="px-3 py-1.5 text-xs font-semibold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 hover:bg-brand-100 rounded-lg flex items-center gap-1.5"
+            className="clay-btn-secondary px-3.5 py-2 text-xs flex items-center gap-2"
           >
-            <CheckCheck className="w-3.5 h-3.5" /> Mark All as Read
+            <CheckCheck className="w-3.5 h-3.5 text-brand-600" /> Mark All as Read
           </button>
         )}
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden">
+      <div className="clay-card divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden">
         {notifications.length === 0 ? (
           <div className="p-12 text-center text-xs text-slate-400">
-            <Bell className="w-8 h-8 mx-auto mb-2 opacity-40" />
+            <Bell className="w-8 h-8 mx-auto mb-2 opacity-40 text-brand-500" />
             No notifications in your inbox.
           </div>
         ) : (
@@ -86,11 +86,11 @@ export default function Notifications() {
             <div
               key={n.id}
               className={`p-4 flex items-start justify-between gap-4 transition-colors ${
-                !n.is_read ? 'bg-brand-50/40 dark:bg-brand-950/20' : 'hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                !n.is_read ? 'bg-brand-50/40 dark:bg-brand-950/30' : 'hover:bg-slate-50 dark:hover:bg-slate-800/40'
               }`}
             >
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-600 dark:text-brand-400 mt-0.5">
+                <div className="p-2.5 rounded-full clay-inset text-brand-600 dark:text-brand-400 mt-0.5">
                   <Bell className="w-4 h-4" />
                 </div>
                 <div>
@@ -103,11 +103,11 @@ export default function Notifications() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 shrink-0">
+              <div className="flex items-center gap-1.5 shrink-0">
                 {!n.is_read && (
                   <button
                     onClick={() => handleMarkRead(n.id)}
-                    className="p-1.5 text-slate-400 hover:text-brand-600 rounded-lg transition-colors"
+                    className="p-2 text-slate-400 hover:text-brand-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
                     title="Mark as read"
                   >
                     <CheckCircle className="w-4 h-4" />
@@ -115,7 +115,7 @@ export default function Notifications() {
                 )}
                 <button
                   onClick={() => handleDelete(n.id)}
-                  className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition-colors"
+                  className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors"
                   title="Delete"
                 >
                   <Trash2 className="w-4 h-4" />

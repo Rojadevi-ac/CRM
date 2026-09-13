@@ -20,6 +20,13 @@ def get_roles():
     roles = UserService.get_roles()
     return jsonify({'success': True, 'data': roles}), 200
 
+@user_bp.route('/online', methods=['GET'])
+@token_required
+def get_online():
+    from sockets.socket_events import get_online_users
+    users = get_online_users()
+    return jsonify({'success': True, 'data': users}), 200
+
 @user_bp.route('/<int:user_id>', methods=['GET'])
 @token_required
 def get_user(user_id):

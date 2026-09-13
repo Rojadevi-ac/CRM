@@ -18,7 +18,7 @@ export default function MainLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex transition-colors duration-150">
+    <div className="min-h-screen bg-[#eef3f8] dark:bg-[#090e17] text-slate-800 dark:text-slate-100 flex transition-colors duration-200 relative overflow-x-hidden selection:bg-brand-500/20 selection:text-brand-700 dark:selection:text-brand-300">
       {/* Sidebar Navigation */}
       <Sidebar
         isCollapsed={isCollapsed}
@@ -29,8 +29,8 @@ export default function MainLayout() {
 
       {/* Main Content Viewport */}
       <div
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
-          isCollapsed ? 'lg:pl-20' : 'lg:pl-60'
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 relative z-10 ${
+          isCollapsed ? 'lg:pl-20' : 'lg:pl-64'
         }`}
       >
         <Navbar onOpenMobileSidebar={() => setIsMobileOpen(true)} />

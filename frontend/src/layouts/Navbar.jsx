@@ -113,12 +113,18 @@ export default function Navbar({ onOpenMobileSidebar }) {
 
   return (
     <>
-      <header className="sticky top-0 z-20 h-16 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-6">
+      <header
+        className="sticky top-0 z-20 h-16 backdrop-blur-md flex items-center justify-between px-4 sm:px-6 shadow-sm transition-colors duration-200"
+        style={{
+          backgroundColor: 'var(--theme-bg-sidebar, #ffffff)',
+          borderBottom: '1px solid var(--theme-border-color, #e2e8f0)',
+        }}
+      >
         {/* Left: Mobile Toggle & Global Search trigger */}
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenMobileSidebar}
-            className="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden transition-colors"
+            className="p-2 rounded-xl text-slate-600 dark:text-slate-300 clay-pill lg:hidden transition-all active:scale-95"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -126,42 +132,47 @@ export default function Navbar({ onOpenMobileSidebar }) {
           {/* Search Trigger Button */}
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="flex items-center gap-3 w-48 sm:w-72 md:w-80 px-3.5 py-1.5 bg-slate-100/90 dark:bg-slate-800/80 hover:bg-slate-200/80 dark:hover:bg-slate-750 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg text-xs font-medium border border-transparent hover:border-slate-300 dark:hover:border-slate-700 transition-all text-left"
+            className="flex items-center gap-3 w-48 sm:w-72 md:w-80 px-4 py-2 clay-inset text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-medium transition-all text-left group"
           >
-            <Search className="w-4 h-4 shrink-0 text-slate-400" />
+            <Search className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-brand-500 transition-colors" />
             <span className="flex-1 truncate">Quick search CRM...</span>
           </button>
         </div>
 
         {/* Right: Presence, Notifications, Theme, Profile */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3.5">
           {/* Online Presence Interactive Popover */}
           <div className="relative" ref={onlineRef}>
             <button
               onClick={() => setIsOnlineOpen((prev) => !prev)}
-              className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-400 font-medium transition-colors"
+              className="flex items-center gap-2 px-3.5 py-1.5 clay-pill text-xs text-slate-700 dark:text-slate-200 font-bold transition-all active:scale-95 hover:bg-slate-50 dark:hover:bg-[#1a253a]"
               title="Click to view online team members"
             >
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  isConnected ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'
-                }`}
-              />
+              <span className="relative flex h-2 w-2">
+                {isConnected && (
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                )}
+                <span
+                  className={`relative inline-flex rounded-full h-2 w-2 ${
+                    isConnected ? 'bg-emerald-500' : 'bg-slate-400'
+                  }`}
+                />
+              </span>
               <span>{Math.max(onlineUsers.length, 1)} online</span>
               <ChevronDown className="w-3 h-3 text-slate-400" />
             </button>
 
             {/* Active Members Dropdown Popover */}
             {isOnlineOpen && (
-              <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-40 animate-scaleIn">
-                <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div className="absolute right-0 mt-2 w-72 clay-card p-2 z-40 animate-scaleIn">
+                <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
-                      Active Online Members
+                      Active Members
                     </span>
                   </div>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300">
                     {Math.max(onlineUsers.length, 1)} Active
                   </span>
                 </div>
@@ -171,15 +182,12 @@ export default function Navbar({ onOpenMobileSidebar }) {
                     onlineUsers.map((u, idx) => (
                       <div
                         key={u.user_id || idx}
-                        className="p-2.5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors"
+                        className="p-2 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="relative">
-                            <Avatar name={u.full_name} size="sm" />
-                            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900" />
-                          </div>
+                          <Avatar name={u.full_name} size="sm" />
                           <div className="min-w-0">
-                            <div className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">
+                            <div className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
                               {u.full_name} {u.user_id === user?.id && '(You)'}
                             </div>
                             <div className="text-[10px] text-slate-400 truncate">
@@ -187,20 +195,17 @@ export default function Navbar({ onOpenMobileSidebar }) {
                             </div>
                           </div>
                         </div>
-                        <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 shrink-0 ml-2">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300 shrink-0 ml-2">
                           {u.role || 'Staff'}
                         </span>
                       </div>
                     ))
                   ) : (
-                    <div className="p-2.5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors">
+                    <div className="p-2 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="relative">
-                          <Avatar name={user?.full_name} size="sm" />
-                          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900" />
-                        </div>
+                        <Avatar name={user?.full_name} size="sm" />
                         <div className="min-w-0">
-                          <div className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">
+                          <div className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
                             {user?.full_name} (You)
                           </div>
                           <div className="text-[10px] text-slate-400 truncate">
@@ -208,7 +213,7 @@ export default function Navbar({ onOpenMobileSidebar }) {
                           </div>
                         </div>
                       </div>
-                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 shrink-0 ml-2">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300 shrink-0 ml-2">
                         {user?.role_name || user?.role || 'Staff'}
                       </span>
                     </div>
@@ -218,38 +223,46 @@ export default function Navbar({ onOpenMobileSidebar }) {
             )}
           </div>
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-xl clay-pill text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-all active:scale-95"
             title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label="Toggle theme"
           >
-            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+            {isDark ? (
+              <Sun className="w-4 h-4 text-amber-400 animate-fadeIn" />
+            ) : (
+              <Moon className="w-4 h-4 text-slate-700 animate-fadeIn" />
+            )}
           </button>
 
           {/* Notification Center */}
           <div className="relative" ref={notifRef}>
             <button
               onClick={() => setIsNotifOpen((prev) => !prev)}
-              className="relative p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="relative p-2 rounded-xl clay-pill text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-all active:scale-95"
               title="Notifications"
             >
-              <Bell className="w-5 h-5" />
+              <Bell className="w-4 h-4" />
               {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900" />
+                <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500 ring-2 ring-white dark:ring-slate-900" />
+                </span>
               )}
             </button>
 
             {/* Notification Dropdown */}
             {isNotifOpen && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-40 animate-scaleIn">
+              <div className="absolute right-0 mt-2 w-80 sm:w-96 clay-card overflow-hidden z-40 animate-scaleIn">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-800">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-sm text-slate-900 dark:text-slate-100">
+                    <span className="font-bold text-sm text-slate-900 dark:text-slate-100">
                       Notifications
                     </span>
                     {unreadCount > 0 && (
-                      <span className="px-2 py-0.5 text-[11px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 rounded-full">
+                      <span className="px-2 py-0.5 text-[11px] font-bold bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 rounded-full border border-rose-200 dark:border-rose-800">
                         {unreadCount} new
                       </span>
                     )}
@@ -257,7 +270,7 @@ export default function Navbar({ onOpenMobileSidebar }) {
                   {unreadCount > 0 && (
                     <button
                       onClick={handleMarkAllRead}
-                      className="text-xs text-brand-600 dark:text-brand-400 hover:underline font-medium"
+                      className="text-xs text-brand-600 dark:text-brand-400 hover:underline font-bold"
                     >
                       Mark all read
                     </button>
@@ -274,11 +287,11 @@ export default function Navbar({ onOpenMobileSidebar }) {
                       <div
                         key={n.id}
                         className={`p-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors flex items-start justify-between gap-3 ${
-                          !n.is_read ? 'bg-brand-50/40 dark:bg-brand-950/20' : ''
+                          !n.is_read ? 'bg-brand-50/50 dark:bg-brand-950/30' : ''
                         }`}
                       >
                         <div className="flex-1">
-                          <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                          <div className="text-xs font-bold text-slate-800 dark:text-slate-200">
                             {n.title}
                           </div>
                           <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
@@ -305,7 +318,7 @@ export default function Navbar({ onOpenMobileSidebar }) {
                 <Link
                   to="/notifications"
                   onClick={() => setIsNotifOpen(false)}
-                  className="block text-center py-2.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  className="block text-center py-2.5 bg-slate-50/80 dark:bg-slate-850/60 border-t border-slate-100 dark:border-slate-800 text-xs font-bold text-brand-600 dark:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   View All Notifications →
                 </Link>
@@ -317,13 +330,13 @@ export default function Navbar({ onOpenMobileSidebar }) {
           <div className="relative" ref={profileRef}>
             <button
               onClick={() => setIsProfileOpen((prev) => !prev)}
-              className="flex items-center gap-2 p-1 pl-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="flex items-center gap-2 p-1.5 pl-3 clay-pill transition-all active:scale-95"
             >
               <div className="hidden sm:flex flex-col text-right">
-                <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 leading-tight">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">
                   {user?.full_name || 'User'}
                 </span>
-                <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                <span className="text-[10px] text-brand-600 dark:text-brand-400 font-bold">
                   {user?.role_name || user?.role || 'Staff'}
                 </span>
               </div>
@@ -337,15 +350,15 @@ export default function Navbar({ onOpenMobileSidebar }) {
 
             {/* Profile Dropdown Menu */}
             {isProfileOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 py-1.5 z-40 animate-scaleIn">
+              <div className="absolute right-0 mt-2 w-56 clay-card py-2 z-40 animate-scaleIn">
                 <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
-                  <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
+                  <p className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
                     {user?.full_name}
                   </p>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
                     {user?.email}
                   </p>
-                  <span className="inline-block mt-1.5 px-2 py-0.5 text-[10px] font-semibold bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300 rounded border border-brand-200 dark:border-brand-800">
+                  <span className="inline-block mt-2 px-2.5 py-0.5 text-[10px] font-bold bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300 rounded-full border border-brand-200 dark:border-brand-800">
                     {user?.role_name || user?.role}
                   </span>
                 </div>
@@ -354,7 +367,7 @@ export default function Navbar({ onOpenMobileSidebar }) {
                   <Link
                     to="/profile"
                     onClick={() => setIsProfileOpen(false)}
-                    className="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                    className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-brand-50 dark:hover:bg-brand-950/40 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                   >
                     <User className="w-4 h-4 text-slate-400" />
                     View Profile
@@ -364,7 +377,7 @@ export default function Navbar({ onOpenMobileSidebar }) {
                     <Link
                       to="/settings"
                       onClick={() => setIsProfileOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-brand-50 dark:hover:bg-brand-950/40 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                     >
                       <SettingsIcon className="w-4 h-4 text-slate-400" />
                       Settings
@@ -375,7 +388,7 @@ export default function Navbar({ onOpenMobileSidebar }) {
                     <Link
                       to="/audit-logs"
                       onClick={() => setIsProfileOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-brand-50 dark:hover:bg-brand-950/40 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                     >
                       <ShieldCheck className="w-4 h-4 text-slate-400" />
                       Audit Logs
@@ -386,7 +399,7 @@ export default function Navbar({ onOpenMobileSidebar }) {
                 <div className="border-t border-slate-100 dark:border-slate-800 pt-1">
                   <button
                     onClick={logout}
-                    className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                    className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     Sign Out

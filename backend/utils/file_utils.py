@@ -36,3 +36,38 @@ def remove_avatar_file(avatar_url):
             os.remove(file_path)
     except Exception as e:
         print(f"Error removing avatar file: {e}")
+
+def allowed_logo_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in config.ALLOWED_LOGO_EXTENSIONS
+
+def save_logo_file(file):
+    if not file or file.filename == '':
+        return None, "No file selected"
+    
+    if not allowed_logo_file(file.filename):
+        return None, f"File type not allowed. Allowed formats: {', '.join(config.ALLOWED_LOGO_EXTENSIONS).upper()}"
+    
+    os.makedirs(config.LOGO_UPLOAD_FOLDER, exist_ok=True)
+    
+    ext = file.filename.rsplit('.', 1)[1].lower()
+    unique_filename = f"company_logo_{uuid.uuid4().hex[:12]}.{ext}"
+    file_path = os.path.join(config.LOGO_UPLOAD_FOLDER, unique_filename)
+    
+    file.save(file_path)
+    
+    # URL path to be returned
+    url_path = f"/uploads/company_logos/{unique_filename}"
+    return url_path, None
+
+def remove_logo_file(logo_url):
+    if not logo_url:
+        return
+    try:
+        filename = os.path.basename(logo_url)
+        file_path = os.path.join(config.LOGO_UPLOAD_FOLDER, filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+    except Exception as e:
+        print(f"Error removing logo file: {e}")
+

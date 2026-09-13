@@ -181,11 +181,11 @@ export default function LeadDetails() {
       </div>
 
       {/* Profile Header Card */}
-      <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div className="clay-card p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div className="flex items-center gap-4">
           <Avatar name={lead.name} size="xl" />
           <div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
                 {lead.name}
               </h1>
@@ -193,7 +193,7 @@ export default function LeadDetails() {
               <PriorityBadge priority={lead.priority} />
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-slate-400" />
+              <Building2 className="w-4 h-4 text-brand-500" />
               {lead.company_name || 'Individual Lead'} • {lead.industry || 'General Industry'}
             </p>
           </div>
@@ -216,7 +216,7 @@ export default function LeadDetails() {
             </span>
             <div className="flex items-center gap-2 mt-0.5">
               <Avatar src={lead.assigned_user_avatar} name={lead.assigned_user_name} size="xs" />
-              <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                 {lead.assigned_user_name || 'Unassigned'}
               </span>
             </div>
@@ -229,13 +229,13 @@ export default function LeadDetails() {
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setIsFollowupModalOpen(true)}
-            className="px-3 py-2 text-xs font-semibold bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg shadow-2xs transition-colors flex items-center gap-1.5"
+            className="clay-btn-secondary px-3.5 py-2 text-xs flex items-center gap-2"
           >
             <CalendarClock className="w-3.5 h-3.5 text-amber-500" /> Schedule Follow-up
           </button>
           <button
             onClick={() => setIsTaskModalOpen(true)}
-            className="px-3 py-2 text-xs font-semibold bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg shadow-2xs transition-colors flex items-center gap-1.5"
+            className="clay-btn-secondary px-3.5 py-2 text-xs flex items-center gap-2"
           >
             <ClipboardCheck className="w-3.5 h-3.5 text-emerald-500" /> Add Task
           </button>
@@ -243,15 +243,15 @@ export default function LeadDetails() {
       )}
 
       {/* Navigation Tabs */}
-      <div className="border-b border-slate-200 dark:border-slate-800 flex items-center gap-2 overflow-x-auto">
+      <div className="clay-card p-1.5 flex items-center gap-1.5 overflow-x-auto">
         {TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap ${
+            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all whitespace-nowrap ${
               activeTab === tab
-                ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                ? 'bg-brand-600 text-white shadow-clay-pill'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             {tab}
@@ -263,30 +263,30 @@ export default function LeadDetails() {
       {activeTab === 'Overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+            <div className="clay-card p-6 space-y-4">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 Contact Information
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <span className="text-slate-400 block mb-1">Email Address</span>
-                  <a href={`mailto:${lead.email}`} className="font-semibold text-brand-600 hover:underline">
+                <div className="p-3 clay-inset rounded-xl">
+                  <span className="text-slate-400 block mb-1 font-semibold text-[11px]">Email Address</span>
+                  <a href={`mailto:${lead.email}`} className="font-bold text-brand-600 dark:text-brand-400 hover:underline">
                     {lead.email}
                   </a>
                 </div>
-                <div>
-                  <span className="text-slate-400 block mb-1">Phone Number</span>
-                  <a href={`tel:${lead.phone}`} className="font-semibold text-slate-800 dark:text-slate-200">
+                <div className="p-3 clay-inset rounded-xl">
+                  <span className="text-slate-400 block mb-1 font-semibold text-[11px]">Phone Number</span>
+                  <a href={`tel:${lead.phone}`} className="font-bold text-slate-800 dark:text-slate-200">
                     {lead.phone || '—'}
                   </a>
                 </div>
-                <div>
-                  <span className="text-slate-400 block mb-1">Source</span>
-                  <span className="font-semibold text-slate-800 dark:text-slate-200">{lead.source}</span>
+                <div className="p-3 clay-inset rounded-xl">
+                  <span className="text-slate-400 block mb-1 font-semibold text-[11px]">Source</span>
+                  <span className="font-bold text-slate-800 dark:text-slate-200">{lead.source}</span>
                 </div>
-                <div>
-                  <span className="text-slate-400 block mb-1">Created Date</span>
-                  <span className="font-semibold text-slate-800 dark:text-slate-200">
+                <div className="p-3 clay-inset rounded-xl">
+                  <span className="text-slate-400 block mb-1 font-semibold text-[11px]">Created Date</span>
+                  <span className="font-bold text-slate-800 dark:text-slate-200">
                     {formatDate(lead.created_at)}
                   </span>
                 </div>
@@ -295,9 +295,9 @@ export default function LeadDetails() {
 
             {/* Quick Add Note Box */}
             {canWrite && (
-              <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+              <div className="clay-card p-5 space-y-3">
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-brand-600" /> Add Internal Note
+                  <MessageSquare className="w-4 h-4 text-brand-500" /> Add Internal Note
                 </h3>
                 <form onSubmit={handleAddNote} className="space-y-3">
                   <textarea
@@ -305,13 +305,13 @@ export default function LeadDetails() {
                     value={noteContent}
                     onChange={(e) => setNoteContent(e.target.value)}
                     placeholder="Log important insights, conversation summaries, or next action steps..."
-                    className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-brand-500"
+                    className="w-full p-3 clay-inset text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-500"
                   />
                   <div className="flex justify-end">
                     <button
                       type="submit"
                       disabled={addingNote || !noteContent.trim()}
-                      className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                      className="clay-btn-primary px-4 py-2 text-xs flex items-center gap-2 disabled:opacity-50"
                     >
                       <Send className="w-3.5 h-3.5" /> Save Note
                     </button>
@@ -323,22 +323,22 @@ export default function LeadDetails() {
 
           {/* Right Column Summary */}
           <div className="space-y-6">
-            <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+            <div className="clay-card p-6 space-y-3">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 Lead Status Tracker
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Current Stage:</span>
+                  <span className="text-slate-400 font-medium">Current Stage:</span>
                   <StatusBadge status={lead.status} />
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Priority Level:</span>
+                  <span className="text-slate-400 font-medium">Priority Level:</span>
                   <PriorityBadge priority={lead.priority} />
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Created By:</span>
-                  <span className="font-medium text-slate-700 dark:text-slate-300">
+                  <span className="text-slate-400 font-medium">Created By:</span>
+                  <span className="font-bold text-slate-700 dark:text-slate-300">
                     {lead.created_by_name || 'System'}
                   </span>
                 </div>
@@ -350,9 +350,9 @@ export default function LeadDetails() {
 
       {/* Chronological Timeline Tab */}
       {activeTab === 'Timeline' && (
-        <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+        <div className="clay-card p-6">
           <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2">
-            <History className="w-4 h-4 text-brand-600" /> Chronological Activity & Interaction Timeline
+            <History className="w-4 h-4 text-brand-500" /> Chronological Activity & Interaction Timeline
           </h3>
 
           <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-800">
@@ -364,7 +364,7 @@ export default function LeadDetails() {
                   {/* Timeline dot */}
                   <div className="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-brand-600 ring-4 ring-white dark:ring-slate-900" />
 
-                  <div className="flex-1 p-3.5 rounded-lg bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 space-y-1">
+                  <div className="flex-1 p-4 rounded-xl clay-card space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
                         {evt.subject || evt.activity_type}
@@ -391,7 +391,7 @@ export default function LeadDetails() {
 
       {/* Notes Tab */}
       {activeTab === 'Notes' && (
-        <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div className="clay-card p-6 space-y-4">
           <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
             Internal Collaboration Notes
           </h3>
@@ -401,7 +401,7 @@ export default function LeadDetails() {
               <div className="text-xs text-slate-400">No internal notes added.</div>
             ) : (
               notes.map((n) => (
-                <div key={n.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                <div key={n.id} className="p-4 rounded-xl clay-inset space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
                       <Avatar src={n.author_avatar} name={n.author_name} size="xs" />
@@ -419,7 +419,6 @@ export default function LeadDetails() {
         </div>
       )}
 
-
       {/* Schedule Followup Modal */}
       <Modal isOpen={isFollowupModalOpen} onClose={() => setIsFollowupModalOpen(false)} title="Schedule Follow-up">
         <form onSubmit={handleSaveFollowup} className="space-y-4">
@@ -431,7 +430,7 @@ export default function LeadDetails() {
                 required
                 value={folForm.followup_date}
                 onChange={(e) => setFolForm({ ...folForm, followup_date: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               />
             </div>
             <div>
@@ -440,7 +439,7 @@ export default function LeadDetails() {
                 type="time"
                 value={folForm.followup_time}
                 onChange={(e) => setFolForm({ ...folForm, followup_time: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               />
             </div>
           </div>
@@ -452,12 +451,12 @@ export default function LeadDetails() {
               value={folForm.purpose}
               onChange={(e) => setFolForm({ ...folForm, purpose: e.target.value })}
               placeholder="e.g. Follow up on proposal pricing"
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              className="w-full px-3.5 py-2 clay-inset text-xs"
             />
           </div>
           <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
-            <button type="button" onClick={() => setIsFollowupModalOpen(false)} className="px-3 py-1.5 text-xs text-slate-600">Cancel</button>
-            <button type="submit" className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg">Schedule</button>
+            <button type="button" onClick={() => setIsFollowupModalOpen(false)} className="clay-btn-secondary px-4 py-2 text-xs">Cancel</button>
+            <button type="submit" className="clay-btn-primary px-5 py-2 text-xs">Schedule</button>
           </div>
         </form>
       </Modal>
@@ -473,7 +472,7 @@ export default function LeadDetails() {
               value={taskForm.task_name}
               onChange={(e) => setTaskForm({ ...taskForm, task_name: e.target.value })}
               placeholder="e.g. Prepare customized proposal draft"
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              className="w-full px-3.5 py-2 clay-inset text-xs"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -484,7 +483,7 @@ export default function LeadDetails() {
                 required
                 value={taskForm.due_date}
                 onChange={(e) => setTaskForm({ ...taskForm, due_date: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               />
             </div>
             <div>
@@ -492,7 +491,7 @@ export default function LeadDetails() {
               <select
                 value={taskForm.priority}
                 onChange={(e) => setTaskForm({ ...taskForm, priority: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+                className="w-full px-3.5 py-2 clay-inset text-xs"
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -502,8 +501,8 @@ export default function LeadDetails() {
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
-            <button type="button" onClick={() => setIsTaskModalOpen(false)} className="px-3 py-1.5 text-xs text-slate-600">Cancel</button>
-            <button type="submit" className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg">Create Task</button>
+            <button type="button" onClick={() => setIsTaskModalOpen(false)} className="clay-btn-secondary px-4 py-2 text-xs">Cancel</button>
+            <button type="submit" className="clay-btn-primary px-5 py-2 text-xs">Create Task</button>
           </div>
         </form>
       </Modal>

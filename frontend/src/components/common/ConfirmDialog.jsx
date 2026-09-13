@@ -35,7 +35,7 @@ export default function ConfirmDialog({
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            className="clay-btn-secondary px-4 py-2 text-xs"
           >
             Cancel
           </button>
@@ -43,14 +43,14 @@ export default function ConfirmDialog({
             type="button"
             onClick={onConfirm}
             disabled={loading}
-            className={`px-4 py-2 text-sm font-medium text-white rounded-lg shadow-sm transition-colors flex items-center gap-2 ${
+            className={`px-5 py-2 text-xs font-bold text-white rounded-xl shadow-clay-btn transition-all flex items-center gap-2 ${
               confirmVariant === 'danger'
-                ? 'bg-rose-600 hover:bg-rose-700'
-                : 'bg-brand-600 hover:bg-brand-700'
+                ? 'bg-gradient-to-b from-rose-500 to-rose-600 hover:from-rose-400 hover:to-rose-500'
+                : 'clay-btn-primary'
             } disabled:opacity-50`}
           >
             {loading && (
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
             )}
             {confirmText}
           </button>

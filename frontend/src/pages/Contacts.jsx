@@ -221,25 +221,27 @@ export default function Contacts() {
     <div className="space-y-5 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Contacts</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <Contact className="w-6 h-6 text-brand-500" /> Contacts
+          </h1>
           <p className="text-xs text-slate-500">Business contacts, decision makers, and stakeholder directory.</p>
         </div>
         {canWrite && (
-          <button onClick={openCreateModal} className="px-3.5 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg flex items-center gap-1.5">
-            <Plus className="w-3.5 h-3.5" /> Add Contact
+          <button onClick={openCreateModal} className="clay-btn-primary px-4 py-2 text-xs flex items-center gap-2">
+            <Plus className="w-4 h-4" /> Add Contact
           </button>
         )}
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+      <div className="clay-card p-4">
         <div className="relative">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search contacts by name, email, phone..."
-            className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+            className="w-full pl-10 pr-3 py-2 clay-inset text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         </div>
       </div>
@@ -260,27 +262,27 @@ export default function Contacts() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">First Name *</label>
-              <input type="text" required value={formData.first_name} onChange={(e) => setFormData({ ...formData, first_name: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="text" required value={formData.first_name} onChange={(e) => setFormData({ ...formData, first_name: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Last Name</label>
-              <input type="text" value={formData.last_name} onChange={(e) => setFormData({ ...formData, last_name: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="text" value={formData.last_name} onChange={(e) => setFormData({ ...formData, last_name: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Email Address *</label>
-              <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Phone Number</label>
-              <input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Job Title</label>
-              <input type="text" value={formData.job_title} onChange={(e) => setFormData({ ...formData, job_title: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="text" value={formData.job_title} onChange={(e) => setFormData({ ...formData, job_title: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Company</label>
-              <select value={formData.company_id} onChange={(e) => setFormData({ ...formData, company_id: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.company_id} onChange={(e) => setFormData({ ...formData, company_id: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 <option value="">None</option>
                 {companies.map((c) => (
                   <option key={c.id} value={c.id}>{c.name}</option>
@@ -289,16 +291,16 @@ export default function Contacts() {
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Contact Role</label>
-              <select value={formData.contact_type} onChange={(e) => setFormData({ ...formData, contact_type: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.contact_type} onChange={(e) => setFormData({ ...formData, contact_type: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 {CONTACT_TYPES.map((t) => (
                   <option key={t} value={t}>{t}</option>
                 ))}
               </select>
             </div>
           </div>
-          <div className="flex justify-end gap-3 pt-3 border-t">
-            <button type="button" onClick={() => { setIsCreateOpen(false); setIsEditOpen(false); }} className="px-3 py-1.5 text-xs">Cancel</button>
-            <button type="submit" disabled={submitting} className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg">Save</button>
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <button type="button" onClick={() => { setIsCreateOpen(false); setIsEditOpen(false); }} className="clay-btn-secondary px-4 py-2 text-xs">Cancel</button>
+            <button type="submit" disabled={submitting} className="clay-btn-primary px-5 py-2 text-xs">Save</button>
           </div>
         </form>
       </Modal>

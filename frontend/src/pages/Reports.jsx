@@ -27,6 +27,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useSocket } from '../context/SocketContext';
+import { useCompany } from '../context/CompanyContext';
 import Avatar from '../components/common/Avatar';
 import StatusBadge from '../components/common/StatusBadge';
 import * as XLSX from 'xlsx';
@@ -61,6 +62,10 @@ export default function Reports() {
   const { isReadOnly } = useAuth();
   const { toast } = useToast();
   const { subscribeToEvent, unsubscribeFromEvent } = useSocket();
+  const { companySettings } = useCompany();
+
+  const companyName = companySettings?.display_name || companySettings?.company_name || 'Enterprise CRM';
+  const currencyCode = companySettings?.currency || 'USD';
 
   const fetchReports = useCallback(async () => {
     setLoading(true);
@@ -178,7 +183,8 @@ export default function Reports() {
       }
 
       const todayStr = new Date().toISOString().split('T')[0];
-      XLSX.writeFile(wb, `RD_CRM_Performance_Report_${todayStr}.xlsx`);
+      const safeName = companyName.replace(/[^a-zA-Z0-9]/g, '_');
+      XLSX.writeFile(wb, `${safeName}_Performance_Report_${todayStr}.xlsx`);
       toast.success('Excel workbook exported successfully');
     } catch (err) {
       console.error(err);
@@ -191,8 +197,8 @@ export default function Reports() {
       {/* Page Title & Excel Download Trigger */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Executive Reports & Analytics
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <BarChart3 className="w-6 h-6 text-brand-500" /> Executive Reports & Analytics
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Data insights, lead conversion rates, rep leaderboard, and downloadable Excel sheets.
@@ -201,28 +207,28 @@ export default function Reports() {
 
         <button
           onClick={handleExportExcel}
-          className="px-4 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-colors flex items-center gap-2"
+          className="clay-btn-primary px-4 py-2.5 text-xs flex items-center gap-2"
         >
           <FileSpreadsheet className="w-4 h-4" /> Download Complete Excel Workbook (.xlsx)
         </button>
       </div>
 
       {/* Date Range Selector Bar */}
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-wrap items-center gap-3">
+      <div className="clay-card p-4 flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-slate-400" />
-          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Period:</span>
+          <Calendar className="w-4 h-4 text-brand-500" />
+          <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Period:</span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-2">
           {DATE_RANGES.map((r) => (
             <button
               key={r.value}
               onClick={() => setDateRange(r.value)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                 dateRange === r.value
-                  ? 'bg-brand-600 text-white shadow-2xs font-semibold'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  ? 'bg-brand-600 text-white shadow-clay-pill'
+                  : 'clay-inset text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
               {r.label}
@@ -236,86 +242,64 @@ export default function Reports() {
               type="date"
               value={customFrom}
               onChange={(e) => setCustomFrom(e.target.value)}
-              className="px-2.5 py-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              className="px-3 py-1.5 clay-inset text-xs font-medium"
             />
-            <span className="text-xs text-slate-400">to</span>
+            <span className="text-xs text-slate-400 font-semibold">to</span>
             <input
               type="date"
               value={customTo}
               onChange={(e) => setCustomTo(e.target.value)}
-              className="px-2.5 py-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              className="px-3 py-1.5 clay-inset text-xs font-medium"
             />
           </div>
         )}
       </div>
 
       {/* Report Module Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800">
-        <button
-          onClick={() => setActiveReportTab('sales')}
-          className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-            activeReportTab === 'sales'
-              ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          Sales & Pipeline Report
-        </button>
-        <button
-          onClick={() => setActiveReportTab('leads')}
-          className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-            activeReportTab === 'leads'
-              ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          Lead Conversion Analytics
-        </button>
-        <button
-          onClick={() => setActiveReportTab('salesperson')}
-          className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-            activeReportTab === 'salesperson'
-              ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          Sales Team Leaderboard
-        </button>
-        <button
-          onClick={() => setActiveReportTab('customers')}
-          className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-            activeReportTab === 'customers'
-              ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          Customer Distribution
-        </button>
+      <div className="clay-card p-1.5 flex items-center gap-1.5 overflow-x-auto">
+        {[
+          { id: 'sales', label: 'Sales & Pipeline Report' },
+          { id: 'leads', label: 'Lead Conversion Analytics' },
+          { id: 'salesperson', label: 'Sales Team Leaderboard' },
+          { id: 'customers', label: 'Customer Distribution' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveReportTab(tab.id)}
+            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all whitespace-nowrap ${
+              activeReportTab === tab.id
+                ? 'bg-brand-600 text-white shadow-clay-pill'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* 1. SALES REPORT */}
       {activeReportTab === 'sales' && salesData && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Total Deals</span>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
                 {salesData.total_deals}
               </h3>
             </div>
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Won Revenue</span>
               <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
                 ₹{Number(salesData.won_revenue).toLocaleString('en-IN')}
               </h3>
             </div>
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Pipeline Value</span>
               <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">
                 ₹{Number(salesData.pipeline_value).toLocaleString('en-IN')}
               </h3>
             </div>
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Average Deal Size</span>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
                 ₹{Number(salesData.avg_deal_size).toLocaleString('en-IN')}
@@ -324,7 +308,7 @@ export default function Reports() {
           </div>
 
           {/* Deals Table */}
-          <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="clay-card p-6">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">
               Deal Breakdown in Period
             </h3>
@@ -366,15 +350,15 @@ export default function Reports() {
       {activeReportTab === 'leads' && leadData && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Total Leads Captured</span>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">{leadData.total_leads}</h3>
             </div>
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Conversion Rate</span>
               <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{leadData.conversion_rate}%</h3>
             </div>
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Period Filter</span>
               <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 mt-1">
                 {leadData.date_bounds.from} to {leadData.date_bounds.to}
@@ -382,11 +366,11 @@ export default function Reports() {
             </div>
           </div>
 
-          <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="clay-card p-6">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">Leads by Status</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {leadData.by_status.map((st) => (
-                <div key={st.status} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-xs">
+                <div key={st.status} className="p-3 clay-inset rounded-xl text-xs">
                   <span className="text-slate-400 font-medium block">{st.status}</span>
                   <span className="text-lg font-bold text-slate-900 dark:text-slate-100 mt-0.5 block">{st.count} leads</span>
                   <span className="text-[11px] text-slate-500">₹{Number(st.total_value).toLocaleString('en-IN')}</span>
@@ -399,7 +383,7 @@ export default function Reports() {
 
       {/* 3. SALESPERSON REPORT */}
       {activeReportTab === 'salesperson' && spData && (
-        <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+        <div className="clay-card p-6">
           <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">
             Sales Representative Performance Breakdown
           </h3>
@@ -438,25 +422,25 @@ export default function Reports() {
       {activeReportTab === 'customers' && custData && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Total Accounts</span>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">{custData.total_customers}</h3>
             </div>
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">Active Clients</span>
               <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{custData.active_customers}</h3>
             </div>
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="clay-card clay-card-hover p-5">
               <span className="text-xs font-semibold text-slate-400 uppercase">New In Period</span>
               <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">{custData.new_customers}</h3>
             </div>
           </div>
 
-          <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="clay-card p-6">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">Accounts by Industry</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {custData.by_industry.map((ind) => (
-                <div key={ind.industry} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-xs">
+                <div key={ind.industry} className="p-3 clay-inset rounded-xl text-xs">
                   <span className="text-slate-400 font-medium">{ind.industry}</span>
                   <span className="text-base font-bold text-slate-900 dark:text-slate-100 mt-1 block">{ind.count} accounts</span>
                 </div>

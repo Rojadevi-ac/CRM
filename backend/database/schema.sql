@@ -295,3 +295,47 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     INDEX idx_audit_user (user_id),
     INDEX idx_audit_created_at (created_at)
 ) ENGINE=InnoDB;
+
+-- 16. Company Settings (Organization CMS & Branding)
+CREATE TABLE IF NOT EXISTS company_settings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    company_name VARCHAR(150) NOT NULL DEFAULT 'Enterprise CRM',
+    legal_name VARCHAR(150) NULL,
+    display_name VARCHAR(150) NULL,
+    logo_url VARCHAR(255) NULL,
+    email VARCHAR(150) NULL,
+    phone VARCHAR(50) NULL,
+    alternate_phone VARCHAR(50) NULL,
+    website VARCHAR(255) NULL,
+    address_line_1 VARCHAR(255) NULL,
+    address_line_2 VARCHAR(255) NULL,
+    city VARCHAR(100) NULL,
+    state VARCHAR(100) NULL,
+    country VARCHAR(100) DEFAULT 'India',
+    postal_code VARCHAR(30) NULL,
+    tax_number VARCHAR(50) NULL,
+    registration_number VARCHAR(50) NULL,
+    currency VARCHAR(10) DEFAULT 'USD',
+    timezone VARCHAR(50) DEFAULT 'UTC',
+    date_format VARCHAR(20) DEFAULT 'MM/DD/YYYY',
+    contact_person VARCHAR(100) NULL,
+    description TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- 17. User Preferences (Theme, Density, Radius & Personalization)
+CREATE TABLE IF NOT EXISTS user_preferences (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    theme_mode VARCHAR(20) DEFAULT 'system',
+    theme_template VARCHAR(50) DEFAULT 'classic-blue',
+    accent_color VARCHAR(50) DEFAULT '#2563eb',
+    sidebar_behavior VARCHAR(20) DEFAULT 'expanded',
+    ui_density VARCHAR(20) DEFAULT 'comfortable',
+    border_radius VARCHAR(20) DEFAULT 'medium',
+    custom_theme JSON NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;

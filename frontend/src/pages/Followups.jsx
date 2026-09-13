@@ -250,35 +250,37 @@ export default function Followups() {
     <div className="space-y-5 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Follow-ups</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <CalendarClock className="w-6 h-6 text-brand-500" /> Follow-ups
+          </h1>
           <p className="text-xs text-slate-500">Scheduled touchpoints, call-backs, and prospect check-ins.</p>
         </div>
         {canWrite && (
-          <button onClick={openCreateModal} className="px-3.5 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg flex items-center gap-1.5">
-            <Plus className="w-3.5 h-3.5" /> Schedule Follow-up
+          <button onClick={openCreateModal} className="clay-btn-primary px-4 py-2 text-xs flex items-center gap-2">
+            <Plus className="w-4 h-4" /> Schedule Follow-up
           </button>
         )}
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-3">
+      <div className="clay-card p-4 flex flex-wrap items-center gap-3">
         <button
           onClick={() => setTodayOnly(!todayOnly)}
-          className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors ${
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
             todayOnly
-              ? 'bg-amber-500 text-white border-amber-600'
-              : 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+              ? 'bg-amber-500 text-white shadow-clay-btn'
+              : 'clay-inset text-slate-700 dark:text-slate-300 hover:text-slate-900'
           }`}
         >
           {todayOnly ? "Showing Today's Follow-ups" : "Filter: Today Only"}
         </button>
 
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none">
           <option value="">All Statuses</option>
           {FOLLOWUP_STATUSES.map((st) => (
             <option key={st} value={st}>{st}</option>
           ))}
         </select>
-        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none">
           <option value="">All Priorities</option>
           {PRIORITIES.map((p) => (
             <option key={p} value={p}>{p}</option>
@@ -302,15 +304,15 @@ export default function Followups() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">Date *</label>
-              <input type="date" required value={formData.followup_date} onChange={(e) => setFormData({ ...formData, followup_date: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="date" required value={formData.followup_date} onChange={(e) => setFormData({ ...formData, followup_date: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Time</label>
-              <input type="time" value={formData.followup_time} onChange={(e) => setFormData({ ...formData, followup_time: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="time" value={formData.followup_time} onChange={(e) => setFormData({ ...formData, followup_time: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Related Lead</label>
-              <select value={formData.lead_id} onChange={(e) => setFormData({ ...formData, lead_id: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.lead_id} onChange={(e) => setFormData({ ...formData, lead_id: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 <option value="">Select Lead (Optional)</option>
                 {leads.map((l) => (
                   <option key={l.id} value={l.id}>{l.name} ({l.company_name})</option>
@@ -319,7 +321,7 @@ export default function Followups() {
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Priority</label>
-              <select value={formData.priority} onChange={(e) => setFormData({ ...formData, priority: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.priority} onChange={(e) => setFormData({ ...formData, priority: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 {PRIORITIES.map((p) => (
                   <option key={p} value={p}>{p}</option>
                 ))}
@@ -328,12 +330,12 @@ export default function Followups() {
           </div>
           <div>
             <label className="block text-xs font-semibold mb-1">Purpose / Agenda *</label>
-            <input type="text" required value={formData.purpose} onChange={(e) => setFormData({ ...formData, purpose: e.target.value })} placeholder="e.g. Discuss revised pricing with CTO" className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+            <input type="text" required value={formData.purpose} onChange={(e) => setFormData({ ...formData, purpose: e.target.value })} placeholder="e.g. Discuss revised pricing with CTO" className="w-full px-3.5 py-2 clay-inset text-xs" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">Status</label>
-              <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 {FOLLOWUP_STATUSES.map((st) => (
                   <option key={st} value={st}>{st}</option>
                 ))}
@@ -341,7 +343,7 @@ export default function Followups() {
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Assigned Salesperson</label>
-              <select value={formData.assigned_user_id} onChange={(e) => setFormData({ ...formData, assigned_user_id: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.assigned_user_id} onChange={(e) => setFormData({ ...formData, assigned_user_id: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 <option value="">Select Representative</option>
                 {users.map((u) => (
                   <option key={u.id} value={u.id}>{u.full_name}</option>
@@ -351,11 +353,11 @@ export default function Followups() {
           </div>
           <div>
             <label className="block text-xs font-semibold mb-1">Preparation Notes</label>
-            <textarea rows={3} value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+            <textarea rows={3} value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
           </div>
-          <div className="flex justify-end gap-3 pt-3 border-t">
-            <button type="button" onClick={() => { setIsCreateOpen(false); setIsEditOpen(false); }} className="px-3 py-1.5 text-xs">Cancel</button>
-            <button type="submit" disabled={submitting} className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg">Save</button>
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <button type="button" onClick={() => { setIsCreateOpen(false); setIsEditOpen(false); }} className="clay-btn-secondary px-4 py-2 text-xs">Cancel</button>
+            <button type="submit" disabled={submitting} className="clay-btn-primary px-5 py-2 text-xs">Save</button>
           </div>
         </form>
       </Modal>

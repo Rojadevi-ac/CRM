@@ -183,25 +183,27 @@ export default function Products() {
     <div className="space-y-5 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Products & Services Catalog</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <Package className="w-6 h-6 text-brand-500" /> Products & Services Catalog
+          </h1>
           <p className="text-xs text-slate-500">Software subscriptions, consulting services, and pricing tiers.</p>
         </div>
         {isAdmin && (
-          <button onClick={openCreateModal} className="px-3.5 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg flex items-center gap-1.5">
-            <Plus className="w-3.5 h-3.5" /> Add Product
+          <button onClick={openCreateModal} className="clay-btn-primary px-4 py-2 text-xs flex items-center gap-2">
+            <Plus className="w-4 h-4" /> Add Product
           </button>
         )}
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+      <div className="clay-card p-4">
         <div className="relative">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search products by name or description..."
-            className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+            className="w-full pl-10 pr-3 py-2 clay-inset text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         </div>
       </div>
@@ -220,28 +222,28 @@ export default function Products() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">Product Name *</label>
-              <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Category</label>
-              <input type="text" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="text" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Price (INR) *</label>
-              <input type="number" required value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="number" required value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Tax Rate (%)</label>
-              <input type="number" value={formData.tax_rate} onChange={(e) => setFormData({ ...formData, tax_rate: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="number" value={formData.tax_rate} onChange={(e) => setFormData({ ...formData, tax_rate: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
           </div>
           <div>
             <label className="block text-xs font-semibold mb-1">Description</label>
-            <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+            <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
           </div>
-          <div className="flex justify-end gap-3 pt-3 border-t">
-            <button type="button" onClick={() => { setIsCreateOpen(false); setIsEditOpen(false); }} className="px-3 py-1.5 text-xs">Cancel</button>
-            <button type="submit" disabled={submitting} className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg">Save Product</button>
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <button type="button" onClick={() => { setIsCreateOpen(false); setIsEditOpen(false); }} className="clay-btn-secondary px-4 py-2 text-xs">Cancel</button>
+            <button type="submit" disabled={submitting} className="clay-btn-primary px-5 py-2 text-xs">Save Product</button>
           </div>
         </form>
       </Modal>

@@ -41,6 +41,7 @@ from routes.notification_routes import notification_bp
 from routes.search_routes import search_bp
 from routes.report_routes import report_bp
 from routes.audit_routes import audit_bp
+from routes.settings_routes import settings_bp
 
 def create_app():
     app = Flask(__name__)
@@ -50,8 +51,9 @@ def create_app():
     # Enable CORS
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
-    # Ensure uploads folder exists
+    # Ensure uploads folders exist
     os.makedirs(config.UPLOAD_FOLDER, exist_ok=True)
+    os.makedirs(config.LOGO_UPLOAD_FOLDER, exist_ok=True)
 
     # Register Blueprints
     app.register_blueprint(auth_bp)
@@ -69,11 +71,16 @@ def create_app():
     app.register_blueprint(search_bp)
     app.register_blueprint(report_bp)
     app.register_blueprint(audit_bp)
+    app.register_blueprint(settings_bp)
 
-    # Serve static uploaded files (e.g. avatars)
+    # Serve static uploaded files (e.g. avatars and company logos)
     @app.route('/uploads/profile_pictures/<filename>')
     def serve_avatar(filename):
         return send_from_directory(config.UPLOAD_FOLDER, filename)
+
+    @app.route('/uploads/company_logos/<filename>')
+    def serve_logo(filename):
+        return send_from_directory(config.LOGO_UPLOAD_FOLDER, filename)
 
     # Health check
     @app.route('/api/health')

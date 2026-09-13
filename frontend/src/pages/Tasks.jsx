@@ -234,24 +234,26 @@ export default function Tasks() {
     <div className="space-y-5 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Tasks</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <ClipboardCheck className="w-6 h-6 text-brand-500" /> Tasks
+          </h1>
           <p className="text-xs text-slate-500">Manage deliverables, SLA obligations, and team action items.</p>
         </div>
         {canWrite && (
-          <button onClick={openCreateModal} className="px-3.5 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg flex items-center gap-1.5">
-            <Plus className="w-3.5 h-3.5" /> Create Task
+          <button onClick={openCreateModal} className="clay-btn-primary px-4 py-2 text-xs flex items-center gap-2">
+            <Plus className="w-4 h-4" /> Create Task
           </button>
         )}
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex gap-3">
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+      <div className="clay-card p-4 flex gap-3 flex-wrap">
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none">
           <option value="">All Statuses</option>
           {TASK_STATUSES.map((st) => (
             <option key={st} value={st}>{st}</option>
           ))}
         </select>
-        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="px-3.5 py-2 clay-inset text-xs text-slate-700 dark:text-slate-300 font-medium focus:outline-none">
           <option value="">All Priorities</option>
           {PRIORITIES.map((p) => (
             <option key={p} value={p}>{p}</option>
@@ -274,16 +276,16 @@ export default function Tasks() {
         <form onSubmit={handleSave} className="space-y-4">
           <div>
             <label className="block text-xs font-semibold mb-1">Task Title *</label>
-            <input type="text" required value={formData.task_name} onChange={(e) => setFormData({ ...formData, task_name: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+            <input type="text" required value={formData.task_name} onChange={(e) => setFormData({ ...formData, task_name: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">Due Date</label>
-              <input type="date" required value={formData.due_date} onChange={(e) => setFormData({ ...formData, due_date: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+              <input type="date" required value={formData.due_date} onChange={(e) => setFormData({ ...formData, due_date: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Priority</label>
-              <select value={formData.priority} onChange={(e) => setFormData({ ...formData, priority: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.priority} onChange={(e) => setFormData({ ...formData, priority: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 {PRIORITIES.map((p) => (
                   <option key={p} value={p}>{p}</option>
                 ))}
@@ -291,7 +293,7 @@ export default function Tasks() {
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Status</label>
-              <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 {TASK_STATUSES.map((st) => (
                   <option key={st} value={st}>{st}</option>
                 ))}
@@ -299,7 +301,7 @@ export default function Tasks() {
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">Assign Representative</label>
-              <select value={formData.assigned_user_id} onChange={(e) => setFormData({ ...formData, assigned_user_id: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs">
+              <select value={formData.assigned_user_id} onChange={(e) => setFormData({ ...formData, assigned_user_id: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs">
                 <option value="">Select Staff</option>
                 {users.map((u) => (
                   <option key={u.id} value={u.id}>{u.full_name}</option>
@@ -309,11 +311,11 @@ export default function Tasks() {
           </div>
           <div>
             <label className="block text-xs font-semibold mb-1">Description</label>
-            <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs" />
+            <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-3.5 py-2 clay-inset text-xs" />
           </div>
-          <div className="flex justify-end gap-3 pt-3 border-t">
-            <button type="button" onClick={() => { setIsCreateOpen(false); setIsEditOpen(false); }} className="px-3 py-1.5 text-xs">Cancel</button>
-            <button type="submit" disabled={submitting} className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg">Save Task</button>
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <button type="button" onClick={() => { setIsCreateOpen(false); setIsEditOpen(false); }} className="clay-btn-secondary px-4 py-2 text-xs">Cancel</button>
+            <button type="submit" disabled={submitting} className="clay-btn-primary px-5 py-2 text-xs">Save Task</button>
           </div>
         </form>
       </Modal>
