@@ -27,8 +27,11 @@ jobs:
 
       - name: Power on MySQL
         run: |
-          avn service update mysql-3b347bbd --power-on
+          avn service update mysql-3b347bbd \
+            --project rojadevi08-86a4 \
+            --power-on
 
       - name: Wait for MySQL
         run: |
-          avn service wait mysql-3b347bbd
+          avn service wait mysql-3b347bbd \
+            --project rojadevi08-86a4
