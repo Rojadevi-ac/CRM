@@ -1,0 +1,26 @@
+name: Wake Aiven MySQL
+
+on:
+  workflow_dispatch:
+
+jobs:
+  wake-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Aiven CLI
+        run: pip install aiven-client
+
+      - name: Login to Aiven
+        env:
+          AIVEN_TOKEN: ${{ secrets.AIVEN_TOKEN }}
+        run: |
+          avn user login --token "$AIVEN_TOKEN"
+
+      - name: Power on MySQL
+        run: |
+          avn service update mysql-3b347bbd --power-on
+
+      - name: Wait for MySQL
+        run: |
+          avn service wait mysql-3b347bbd
