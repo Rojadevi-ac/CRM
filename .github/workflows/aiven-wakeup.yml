@@ -11,11 +11,19 @@ jobs:
       - name: Install Aiven CLI
         run: pip install aiven-client
 
-      - name: Login to Aiven
+      - name: Configure Aiven CLI
         env:
           AIVEN_TOKEN: ${{ secrets.AIVEN_TOKEN }}
+          AIVEN_EMAIL: ${{ secrets.AIVEN_EMAIL }}
         run: |
-          avn user login --token "$AIVEN_TOKEN"
+          mkdir -p ~/.config/aiven
+
+          cat > ~/.config/aiven/aiven-credentials.json <<EOF
+          {
+            "auth_token": "$AIVEN_TOKEN",
+            "user_email": "$AIVEN_EMAIL"
+          }
+          EOF
 
       - name: Power on MySQL
         run: |
