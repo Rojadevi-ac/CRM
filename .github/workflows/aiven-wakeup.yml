@@ -3,6 +3,9 @@ name: Wake Aiven MySQL
 on:
   workflow_dispatch:
 
+  schedule:
+    - cron: "0 */6 * * *"
+
 jobs:
   wake-db:
     runs-on: ubuntu-latest
