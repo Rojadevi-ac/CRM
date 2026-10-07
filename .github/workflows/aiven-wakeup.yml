@@ -1,30 +1,11 @@
-name: Wake Aiven MySQL
+name: Aiven MySQL Wake Up
 
-on:
-  workflow_dispatch:
-
-  schedule:
-    - cron: "0 */6 * * *"
+'on':
+workflow_dispatch:
 
 jobs:
-  wake-db:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Install Aiven CLI
-        run: pip install aiven-client
-
-      - name: Power on MySQL
-        env:
-          AIVEN_AUTH_TOKEN: ${{ secrets.AIVEN_TOKEN }}
-        run: |
-          avn service update mysql-3b347bbd \
-            --project rojadevi08-86a4 \
-            --power-on
-
-      - name: Wait for MySQL
-        env:
-          AIVEN_AUTH_TOKEN: ${{ secrets.AIVEN_TOKEN }}
-        run: |
-          avn service wait mysql-3b347bbd \
-            --project rojadevi08-86a4
+wake-aiven:
+runs-on: ubuntu-latest
+steps:
+- name: Test workflow
+run: echo "GitHub Actions YAML is working"
