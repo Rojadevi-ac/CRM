@@ -1,17 +1,42 @@
 name: Aiven MySQL Wake Up
+
 'on':
 workflow_dispatch:
+
 jobs:
 wake-aiven:
 runs-on: ubuntu-latest
 steps:
 - name: Install Aiven CLI
-run: pip install aiven-client
-- name: Check Aiven service
-run: avn --auth-token "${{ secrets.AIVEN_API_TOKEN }}" --project "${{ secrets.AIVEN_PROJECT }}" service get "${{ secrets.AIVEN_SERVICE }}"
-- name: Power on MySQL
-run: avn --auth-token "${{ secrets.AIVEN_API_TOKEN }}" --project "${{ secrets.AIVEN_PROJECT }}" service update "${{ secrets.AIVEN_SERVICE }}" --power-on
-- name: Wait for MySQL
-run: avn --auth-token "${{ secrets.AIVEN_API_TOKEN }}" --project "${{ secrets.AIVEN_PROJECT }}" service wait "${{ secrets.AIVEN_SERVICE }}"
-- name: Finished
-run: echo "Aiven MySQL is running."
+run: |
+pip install aiven-client
+
+```
+  - name: Check Aiven service
+    env:
+      AIVEN_TOKEN: ${{ secrets.AIVEN_API_TOKEN }}
+      AIVEN_PROJECT: ${{ secrets.AIVEN_PROJECT }}
+      AIVEN_SERVICE: ${{ secrets.AIVEN_SERVICE }}
+    run: |
+      avn --auth-token "$AIVEN_TOKEN" --project "$AIVEN_PROJECT" service get "$AIVEN_SERVICE"
+
+  - name: Power on MySQL
+    env:
+      AIVEN_TOKEN: ${{ secrets.AIVEN_API_TOKEN }}
+      AIVEN_PROJECT: ${{ secrets.AIVEN_PROJECT }}
+      AIVEN_SERVICE: ${{ secrets.AIVEN_SERVICE }}
+    run: |
+      avn --auth-token "$AIVEN_TOKEN" --project "$AIVEN_PROJECT" service update "$AIVEN_SERVICE" --power-on
+
+  - name: Wait for MySQL
+    env:
+      AIVEN_TOKEN: ${{ secrets.AIVEN_API_TOKEN }}
+      AIVEN_PROJECT: ${{ secrets.AIVEN_PROJECT }}
+      AIVEN_SERVICE: ${{ secrets.AIVEN_SERVICE }}
+    run: |
+      avn --auth-token "$AIVEN_TOKEN" --project "$AIVEN_PROJECT" service wait "$AIVEN_SERVICE"
+
+  - name: Finished
+    run: |
+      echo "Aiven MySQL is running."
+```
